@@ -7,7 +7,7 @@
 margin: 0px;
 background-color: #505050;
 font-family: consolas;
-font-size: 13pt;
+font-size: 20pt;
 text-align: center;
 }
 #screen {
@@ -21,7 +21,7 @@ background-color: #707070;
 </head>
 <body onload="drawMap(0)">
 <div class="namelist" onclick="toggleNamelist()">
-Toggle Names List
+Names List
 <div id="namelist" class="namelist" style="display:none;">
 Barbel<br>
 Caspari<br>
@@ -61,10 +61,10 @@ var locationY = [0,200,200,200,100,0,-100,-200,-200,-200,-100,0,100,300,300,-300
 var locationName = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"];
 var locationD = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
 var locationAng = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
-var scale = 2; // 2 -> half-scale
+var scale = 1.9; // 2 -> half-scale
 
 drawObj.strokeStyle = "#000000";
-drawObj.font = "20px Consolas";
+drawObj.font = "30px Consolas";
 
 var northStation = "S"; // this radio is colored red to indicate north easily
 var southStation = "W";
@@ -98,7 +98,7 @@ function drawMap(rotation) {
 		//console.log("sX="+screenX+", sY="+screenY);
 		
 		drawObj.beginPath();
-		drawObj.arc(screenX, screenY, 15, 0, 2*Math.PI);
+		drawObj.arc(screenX, screenY, 20, 0, 2*Math.PI);
 		if (locationName[i] == northStation) {
 			drawObj.fillStyle = "#FF0000";
 		} else if (locationName[i] == southStation) {
@@ -114,7 +114,7 @@ function drawMap(rotation) {
 		} else {
 			drawObj.fillStyle = "#000000";
 		}
-		drawObj.fillText(locationName[i], screenX-6, screenY+6);
+		drawObj.fillText(locationName[i], screenX-9, screenY+9);
 	}
 }
 
