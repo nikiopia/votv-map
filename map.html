@@ -1,31 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test</title>
+<title>VOTV - Map</title>
 <style>
 * {
 margin: 0px;
 background-color: #505050;
+font-family: consolas;
+font-size: 13pt;
+text-align: center;
+}
+#screen {
+margin: 0px auto;
+}
+.namelist {
+padding: 10px 0 10px 0;
+background-color: #707070;
 }
 </style>
 </head>
 <body onload="drawMap(0)">
-<canvas id="screen" width="900" height="900"></canvas>
+<div class="namelist" onclick="toggleNamelist()">
+Toggle Names List
+<div id="namelist" class="namelist" style="display:none;">
+Barbel<br>
+Caspari<br>
+Delaina<br>
+Eggen<br>
+Fabia<br>
+Giotto<br>
+Hagan<br>
+Ingo<br>
+Joelle<br>
+Khalid<br>
+Lea<br>
+Marcel<br>
+Noemie<br>
+Orell<br>
+Pascale<br>
+Quirin<br>
+Regula<br>
+Sergio<br>
+Teresa<br>
+Ulrich<br>
+Vanessa<br>
+Walter<br>
+Xaviera<br>
+Yacine
+</div>
+</div>
+<canvas id="screen" width="800" height="800" style="display:block;"></canvas>
 <script type="text/javascript">
 var screen = document.getElementById("screen");
 var drawObj = screen.getContext("2d");
 
-var locationX = [0,0,200];
-var locationY = [0,200,0];
-var locationName = ["A","B","C"];
-var locationD = [0.0,0.0,0.0];
-var locationAng = [0.0,0.0,0.0];
+var namelist = document.getElementById("namelist");
+
+var locationX = [0,-100,0,100,200,200,200,100,0,-100,-200,-200,-200,-300,300,300,-300,-500,0,500,500,500,0,-500,-500];
+var locationY = [0,200,200,200,100,0,-100,-200,-200,-200,-100,0,100,300,300,-300,-300,500,500,500,0,-500,-500,-500,0];
+var locationName = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"];
+var locationD = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+var locationAng = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
 var scale = 2; // 2 -> half-scale
 
 drawObj.strokeStyle = "#000000";
-drawObj.font = "15px Arial";
+drawObj.font = "20px Consolas";
 
-var northStation = "B"; // this radio is colored red to indicate north easily
+var northStation = "S"; // this radio is colored red to indicate north easily
+var southStation = "W";
 
 // precompute D and Ang
 for (let i = 1; i < locationX.length; ++i) {
@@ -59,20 +101,30 @@ function drawMap(rotation) {
 		drawObj.arc(screenX, screenY, 15, 0, 2*Math.PI);
 		if (locationName[i] == northStation) {
 			drawObj.fillStyle = "#FF0000";
+		} else if (locationName[i] == southStation) {
+			drawObj.fillStyle = "#0000FF";
 		} else {
 			drawObj.fillStyle = "#FFFFFF";
 		}
 		drawObj.stroke();
 		drawObj.fill();
 		
-		drawObj.fillStyle = "#000000";
-		drawObj.fillText(locationName[i], screenX-5, screenY+5);
+		if (locationName[i] == northStation || locationName[i] == southStation) {
+			drawObj.fillStyle = "#FFFFFF";
+		} else {
+			drawObj.fillStyle = "#000000";
+		}
+		drawObj.fillText(locationName[i], screenX-6, screenY+6);
 	}
 }
 
 function handleClick(event) {
-	let rawX = event.clientX - (screen.width / 2);
-	let rawY = (screen.height / 2) - event.clientY;
+	if (screen.style.display == "none") { return; } // cant see it so do nothing
+	if (event.clientX < screen.getBoundingClientRect().left || event.clientX > screen.getBoundingClientRect().right) { return; }
+	if (event.clientY < screen.getBoundingClientRect().top || event.clientY > screen.getBoundingClientRect().bottom) { return; }
+	
+	let rawX = event.clientX - screen.getBoundingClientRect().left - (screen.width / 2);
+	let rawY = (screen.height / 2) - (event.clientY - screen.getBoundingClientRect().top);
 	
 	let clickAng = 0;
 	if (rawY >= 0) {
@@ -84,6 +136,17 @@ function handleClick(event) {
 	clickAng = clickAng - Math.PI / 2;
 	
 	drawMap(180 / Math.PI * clickAng);
+}
+
+// Toggle on/off the checklist div
+function toggleNamelist() {
+	if (screen.style.display == "block") {
+		screen.style.display = "none";
+		namelist.style.display = "block";
+	} else {
+		screen.style.display = "block";
+		namelist.style.display = "none";
+	}
 }
 
 document.addEventListener('click', handleClick);
