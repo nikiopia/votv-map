@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+<style>
+* {
+margin: 0px;
+background-color: #505050;
+}
+</style>
+</head>
+<body onload="drawMap(0)">
+<canvas id="screen" width="900" height="900"></canvas>
+<script type="text/javascript">
+var screen = document.getElementById("screen");
+var drawObj = screen.getContext("2d");
+
+var locationX = [0,0];
+var locationY = [0,200];
+var locationName = ["A","B"];
+var locationD = [0.0,0.0];
+var locationAng = [0.0,0.0];
+var scale = 2; // 2 -> half-scale
+
+drawObj.strokeStyle = "#000000";
+drawObj.font = "15px Arial";
+
+// precompute D and Ang
+for (let i = 1; i < locationX.length; ++i) {
+	locationD[i] = Math.sqrt(locationX[i] * locationX[i] + locationY[i] * locationY[i]) / scale;
+	if (locationY[i] >= 0) {
+		locationAng[i] = Math.acos(locationX[i] / locationD[i] * scale);
+	} else {
+		locationAng[i] = 2*Math.PI - Math.acos(locationX[i] / locationD[i] * scale);
+	}
+	//console.log("d="+locationD[i]+", ang="+locationAng[i]);
+}
+
+function drawMap(rotation) {
+	// clear background
+	drawObj.fillStyle = "#505050";
+	drawObj.fillRect(0,0,screen.width,screen.height);
+	
+	// draw objects
+	for (let i = 0; i < locationX.length; ++i) {
+		let rawX = locationD[i] * Math.cos(locationAng[i] + Math.PI / 180 * rotation);
+		let rawY = locationD[i] * Math.sin(locationAng[i] + Math.PI / 180 * rotation);
+		
+		let screenX = (screen.width / 2) + rawX;
+		let screenY = (screen.height / 2) - rawY;
+		
+		//console.log("rX="+rawX+", rY="+rawY);
+		//console.log("sX="+screenX+", sY="+screenY);
+		
+		drawObj.beginPath();
+		drawObj.arc(screenX, screenY, 15, 0, 2*Math.PI);
+		drawObj.fillStyle = "#FFFFFF";
+		drawObj.stroke();
+		drawObj.fill();
+		
+		drawObj.fillStyle = "#000000";
+		drawObj.fillText(locationName[i], screenX-5, screenY+5);
+	}
+}
+
+function handleClick(event) {
+	let rawX = event.clientX - (screen.width / 2);
+	let rawY = (screen.height / 2) - event.clientY;
+	
+	let clickAng = 0;
+	if (rawY >= 0) {
+		clickAng = Math.acos(rawX / Math.sqrt(rawX * rawX + rawY * rawY));
+	} else {
+		clickAng = 2*Math.PI - Math.acos(rawX / Math.sqrt(rawX * rawX + rawY * rawY));
+	}
+	
+	clickAng = clickAng - Math.PI / 2;
+	
+	drawMap(180 / Math.PI * clickAng);
+}
+
+document.addEventListener('click', handleClick);
+</script>
+</body>
+</html>
