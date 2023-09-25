@@ -15,23 +15,25 @@ background-color: #505050;
 var screen = document.getElementById("screen");
 var drawObj = screen.getContext("2d");
 
-var locationX = [0,0];
-var locationY = [0,200];
-var locationName = ["A","B"];
-var locationD = [0.0,0.0];
-var locationAng = [0.0,0.0];
+var locationX = [0,0,200];
+var locationY = [0,200,0];
+var locationName = ["A","B","C"];
+var locationD = [0.0,0.0,0.0];
+var locationAng = [0.0,0.0,0.0];
 var scale = 2; // 2 -> half-scale
 
 drawObj.strokeStyle = "#000000";
 drawObj.font = "15px Arial";
 
+var northStation = "B"; // this radio is colored red to indicate north easily
+
 // precompute D and Ang
 for (let i = 1; i < locationX.length; ++i) {
 	locationD[i] = Math.sqrt(locationX[i] * locationX[i] + locationY[i] * locationY[i]) / scale;
 	if (locationY[i] >= 0) {
-		locationAng[i] = Math.acos(locationX[i] / locationD[i] * scale);
+		locationAng[i] = Math.acos(locationX[i] / locationD[i] / scale);
 	} else {
-		locationAng[i] = 2*Math.PI - Math.acos(locationX[i] / locationD[i] * scale);
+		locationAng[i] = 2*Math.PI - Math.acos(locationX[i] / locationD[i] / scale);
 	}
 	//console.log("d="+locationD[i]+", ang="+locationAng[i]);
 }
@@ -43,6 +45,7 @@ function drawMap(rotation) {
 	
 	// draw objects
 	for (let i = 0; i < locationX.length; ++i) {
+		//console.log(i);
 		let rawX = locationD[i] * Math.cos(locationAng[i] + Math.PI / 180 * rotation);
 		let rawY = locationD[i] * Math.sin(locationAng[i] + Math.PI / 180 * rotation);
 		
@@ -54,7 +57,11 @@ function drawMap(rotation) {
 		
 		drawObj.beginPath();
 		drawObj.arc(screenX, screenY, 15, 0, 2*Math.PI);
-		drawObj.fillStyle = "#FFFFFF";
+		if (locationName[i] == northStation) {
+			drawObj.fillStyle = "#FF0000";
+		} else {
+			drawObj.fillStyle = "#FFFFFF";
+		}
 		drawObj.stroke();
 		drawObj.fill();
 		
