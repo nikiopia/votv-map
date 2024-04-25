@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VOTV - Trip Planner</title>
+<style>
+* {
+margin: 0px;
+background-color: #505050;
+font-family: consolas;
+font-size: 20pt;
+text-align: center;
+color: white;
+}
+div {
+height: 30px;
+width: 30px;
+}
+#map div {
+position: absolute;
+}
+</style>
+</head>
+<body onload="locateTowers()">
+	<div id="map">
+		<div id="A" style="background-color:black;left:0px;top:0px;" onclick="toggle(0)">A</div>
+		<div id="B" style="background-color:black;left:0px;top:0px;" onclick="toggle(1)">B</div>
+		<div id="C" style="background-color:black;left:0px;top:0px;" onclick="toggle(2)">C</div>
+		<div id="D" style="background-color:black;left:0px;top:0px;" onclick="toggle(3)">D</div>
+		<div id="E" style="background-color:black;left:0px;top:0px;" onclick="toggle(4)">E</div>
+		<div id="F" style="background-color:black;left:0px;top:0px;" onclick="toggle(5)">F</div>
+		<div id="G" style="background-color:black;left:0px;top:0px;" onclick="toggle(6)">G</div>
+		<div id="H" style="background-color:black;left:0px;top:0px;" onclick="toggle(7)">H</div>
+		<div id="I" style="background-color:black;left:0px;top:0px;" onclick="toggle(8)">I</div>
+		<div id="J" style="background-color:black;left:0px;top:0px;" onclick="toggle(9)">J</div>
+		<div id="K" style="background-color:black;left:0px;top:0px;" onclick="toggle(10)">K</div>
+		<div id="L" style="background-color:black;left:0px;top:0px;" onclick="toggle(11)">L</div>
+		<div id="M" style="background-color:black;left:0px;top:0px;" onclick="toggle(12)">M</div>
+		<div id="N" style="background-color:black;left:0px;top:0px;" onclick="toggle(13)">N</div>
+		<div id="O" style="background-color:black;left:0px;top:0px;" onclick="toggle(14)">O</div>
+		<div id="P" style="background-color:black;left:0px;top:0px;" onclick="toggle(15)">P</div>
+		<div id="Q" style="background-color:black;left:0px;top:0px;" onclick="toggle(16)">Q</div>
+		<div id="R" style="background-color:black;left:0px;top:0px;" onclick="toggle(17)">R</div>
+		<div id="S" style="background-color:black;left:0px;top:0px;" onclick="toggle(18)">S</div>
+		<div id="T" style="background-color:black;left:0px;top:0px;" onclick="toggle(19)">T</div>
+		<div id="U" style="background-color:black;left:0px;top:0px;" onclick="toggle(20)">U</div>
+		<div id="V" style="background-color:black;left:0px;top:0px;" onclick="toggle(21)">V</div>
+		<div id="W" style="background-color:black;left:0px;top:0px;" onclick="toggle(22)">W</div>
+		<div id="X" style="background-color:black;left:0px;top:0px;" onclick="toggle(23)">X</div>
+		<div id="Y" style="background-color:black;left:0px;top:0px;" onclick="toggle(24)">Y</div>
+	</div>
+	<script>
+		var locationX = [0,-100,0,100,200,200,200,100,0,-100,-200,-200,-200,-300,300,300,-300,-500,0,500,500,500,0,-500,-500];
+		var locationY = [0,200,200,200,100,0,-100,-200,-200,-200,-100,0,100,300,300,-300,-300,500,500,500,0,-500,-500,-500,0];
+		var locationName = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y"];
+		var scale = 2;
+		
+		function locateTowers() {
+			for (var i = 0; i < 25; i++) {
+				document.getElementById(locationName[i]).style.left = Math.floor((locationX[i] + 500) / scale) + "px";
+				document.getElementById(locationName[i]).style.top = Math.floor((-locationY[i] + 500) / scale) + "px";
+			}
+			return 0;
+		}
+		function toggle(index) {
+			if (index >= 25 || index < 0) { return; }
+			
+			let docElement = document.getElementById(locationName[index]);
+			if (docElement.style.backgroundColor == "black") {
+				docElement.style.backgroundColor = "green";
+			} else {
+				docElement.style.backgroundColor = "black";
+			}
+		}
+	</script>
+</body>
+</html>
